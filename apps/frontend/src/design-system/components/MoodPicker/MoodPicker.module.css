@@ -1,0 +1,23 @@
+.picker {
+  display: flex;
+  gap: var(--space-2);
+}
+
+.option {
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-body);
+  background-color: var(--color-neutral-0);
+  color: var(--color-neutral-900);
+  border-width: thin;
+  border-style: solid;
+  border-color: var(--color-neutral-300);
+  border-radius: var(--space-2);
+  padding: var(--space-2) var(--space-3);
+  cursor: pointer;
+}
+
+.selected {
+  background-color: var(--color-accent-mood-100);
+  border-color: var(--color-accent-mood-default);
+  color: var(--color-accent-mood-muted);
+}
