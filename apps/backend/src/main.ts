@@ -9,7 +9,6 @@ import { validateEnv } from "./env";
 config({ path: ".env.development" });
 
 async function bootstrap() {
-  const unusedLintTripwire = "ci-verification";
   const env = validateEnv();
   const app = await NestFactory.create(AppModule);
   await app.listen(env.PORT);
