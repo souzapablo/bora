@@ -1,0 +1,35 @@
+{
+  "_note": "Hand-maintained fallback (no Python interpreter available in this environment — scripts/lessons.py could not run). Bookkeeping is best-effort per references/lessons.md's no-script fallback path.",
+  "lessons": [
+    {
+      "id": "L-001",
+      "status": "candidate",
+      "signal": "spec_precision_gap",
+      "feature": "bora-3-repo-scaffolding",
+      "source": "spec.md SCAF-02 (P1 AC2) / validation.md AC table",
+      "text": "When a spec designates a manual/external verification method (DevTools inspection, CI dashboard observation) for an acceptance criterion, flag it as a spec-precision gap rather than silently passing it from static file evidence alone.",
+      "occurrences": 1,
+      "features_seen": ["bora-3-repo-scaffolding"]
+    },
+    {
+      "id": "L-002",
+      "status": "candidate",
+      "signal": "spec_precision_gap",
+      "feature": "bora-3-repo-scaffolding",
+      "source": "spec.md SCAF-08 (P2 AC2) / validation.md AC table",
+      "text": "When a spec designates a manual/external verification method (DevTools inspection, CI dashboard observation) for an acceptance criterion, flag it as a spec-precision gap rather than silently passing it from static file evidence alone.",
+      "occurrences": 1,
+      "features_seen": ["bora-3-repo-scaffolding"]
+    },
+    {
+      "id": "L-003",
+      "status": "candidate",
+      "signal": "spec_deviation",
+      "feature": "bora-3-repo-scaffolding",
+      "source": "apps/frontend/package.json:10, apps/backend/package.json:10 (typecheck script uses tsc -b, design.md specifies tsc --noEmit)",
+      "text": "When a per-package script deviates from the design doc's literal command even for a technically sound reason, mark the deviation with an inline comment or equivalent doc note so it is not silently undocumented.",
+      "occurrences": 1,
+      "features_seen": ["bora-3-repo-scaffolding"]
+    }
+  ]
+}
