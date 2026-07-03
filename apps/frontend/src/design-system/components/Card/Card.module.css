@@ -1,0 +1,21 @@
+.card {
+  border-radius: var(--space-2);
+  border-width: thin;
+  border-style: solid;
+  padding: var(--space-4);
+}
+
+.neutral {
+  background-color: var(--color-neutral-50);
+  border-color: var(--color-neutral-200);
+}
+
+.habit {
+  background-color: var(--color-accent-habit-50);
+  border-color: var(--color-accent-habit-default);
+}
+
+.mood {
+  background-color: var(--color-accent-mood-50);
+  border-color: var(--color-accent-mood-default);
+}
