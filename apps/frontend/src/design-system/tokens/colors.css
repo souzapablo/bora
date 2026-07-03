@@ -1,0 +1,44 @@
+:root {
+  /* Neutral/base scale */
+  --color-neutral-0: #ffffff;
+  --color-neutral-50: #f7f7f8;
+  --color-neutral-100: #eeeef0;
+  --color-neutral-200: #d9d9de;
+  --color-neutral-300: #b8b8c0;
+  --color-neutral-400: #8f8f9a;
+  --color-neutral-500: #6b6b76;
+  --color-neutral-600: #4d4d57;
+  --color-neutral-700: #363640;
+  --color-neutral-800: #212127;
+  --color-neutral-900: #121216;
+
+  /* Habit / RPG accent scale (warm amber) */
+  --color-accent-habit-50: #fff4e5;
+  --color-accent-habit-100: #ffe1b3;
+  --color-accent-habit-300: #ffb84d;
+  --color-accent-habit-default: #f28c1a;
+  --color-accent-habit-hover: #d97a0f;
+  --color-accent-habit-muted: #a85f0d;
+  --color-accent-habit-900: #5c3405;
+
+  /* Mood / calm accent scale (teal) */
+  --color-accent-mood-50: #e6f7f6;
+  --color-accent-mood-100: #b3e6e2;
+  --color-accent-mood-300: #4dbfb6;
+  --color-accent-mood-default: #1a9d92;
+  --color-accent-mood-hover: #147d75;
+  --color-accent-mood-muted: #0f5f59;
+  --color-accent-mood-900: #073330;
+
+  /* Semantic colors */
+  --color-semantic-danger: #d93025;
+  --color-semantic-success: #1e8e3e;
+}
+
+[data-theme="light"] {
+  --color-surface: var(--color-neutral-0);
+  --color-surface-muted: var(--color-neutral-50);
+  --color-text: var(--color-neutral-900);
+  --color-text-muted: var(--color-neutral-600);
+  --color-border: var(--color-neutral-200);
+}
