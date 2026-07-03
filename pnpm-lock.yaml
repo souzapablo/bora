@@ -30,6 +30,8 @@ importers:
         specifier: ^8.62.1
         version: 8.62.1(eslint@9.39.4)(typescript@6.0.3)
 
+  packages/shared: {}
+
 packages:
 
   '@babel/code-frame@7.29.7':
