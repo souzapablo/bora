@@ -2,11 +2,13 @@ import { readFileSync } from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
-import { render, screen } from "@testing-library/react";
-import { describe, expect, it } from "vitest";
+import { cleanup, render, screen } from "@testing-library/react";
+import { afterEach, describe, expect, it } from "vitest";
 
 import "../../tokens/index.css";
 import { StreakBadge } from "./StreakBadge";
+
+afterEach(cleanup);
 
 describe("StreakBadge", () => {
   it("displays count when active", () => {

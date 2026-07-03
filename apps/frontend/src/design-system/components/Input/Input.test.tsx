@@ -2,10 +2,12 @@ import { readFileSync } from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
-import { fireEvent, render, screen } from "@testing-library/react";
-import { describe, expect, it, vi } from "vitest";
+import { cleanup, fireEvent, render, screen } from "@testing-library/react";
+import { afterEach, describe, expect, it, vi } from "vitest";
 
 import { Input } from "./Input";
+
+afterEach(cleanup);
 
 describe("Input", () => {
   it("renders default state without throwing", () => {
@@ -28,6 +30,22 @@ describe("Input", () => {
     fireEvent.change(input, { target: { value: "hello" } });
 
     expect(handleChange).toHaveBeenCalledWith("hello");
+  });
+
+  it("gains focus via user interaction and is styled distinctly for the focused state", () => {
+    render(<Input value="" onChange={() => {}} placeholder="focus me" />);
+    const input = screen.getByPlaceholderText("focus me") as HTMLInputElement;
+
+    input.focus();
+    expect(document.activeElement).toBe(input);
+
+    // jsdom's CSS engine does not dynamically re-evaluate :focus in getComputedStyle (no live
+    // pseudo-class matching for computed style), so the distinct-styling claim is verified
+    // structurally: the :focus rule exists and sets a different border-color token than default.
+    const dirname = path.dirname(fileURLToPath(import.meta.url));
+    const css = readFileSync(path.join(dirname, "Input.module.css"), "utf-8");
+    expect(css).toMatch(/\.input:focus\s*\{[^}]*border-color:\s*var\(--color-accent-habit-default\)/);
+    expect(css).toMatch(/\.input\s*\{[^}]*border-color:\s*var\(--color-neutral-300\)/);
   });
 
   it("has zero hardcoded color/px values outside var() in Input.module.css", () => {
