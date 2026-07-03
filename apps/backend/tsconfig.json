@@ -1,0 +1,18 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "composite": true,
+    "outDir": "dist",
+    // SPEC_DEVIATION: moduleResolution "Node"/"node10" is deprecated under typescript@6.0.3
+    // (root-pinned) and errors during `nest start`. Using "NodeNext" (paired with module:
+    // "NodeNext") instead, which resolves CommonJS the same way for this non-ESM Nest app.
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "target": "ES2022",
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "types": ["node"]
+  },
+  "include": ["src"],
+  "references": [{ "path": "../../packages/shared" }]
+}
