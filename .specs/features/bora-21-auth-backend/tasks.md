@@ -116,10 +116,10 @@ T28 → T29
 - Skill: NONE
 
 **Done when**:
-- [ ] `pnpm install` succeeds with new deps resolved
-- [ ] `validateEnv` throws naming `DATABASE_URL`/`JWT_ACCESS_SECRET` when missing
-- [ ] `env.test.ts` extended with a case per new required key (matches existing `PORT` case style)
-- [ ] `.env.example` documents both new vars with placeholder values
+- [x] `pnpm install` succeeds with new deps resolved
+- [x] `validateEnv` throws naming `DATABASE_URL`/`JWT_ACCESS_SECRET` when missing
+- [x] `env.test.ts` extended with a case per new required key (matches existing `PORT` case style)
+- [x] `.env.example` documents both new vars with placeholder values
 
 **Tests**: unit
 **Gate**: quick — `pnpm --filter backend exec vitest run src/env.test.ts`
@@ -141,9 +141,9 @@ T28 → T29
 - Skill: NONE
 
 **Done when**:
-- [ ] `User` model: `id` (cuid), `email` (unique), `passwordHash`, `timezone`, `createdAt`, `updatedAt`, `refreshTokens` relation
-- [ ] `RefreshToken` model: `id`, `userId` (+ relation), `tokenHash` (unique), `expiresAt`, `revokedAt` (nullable), `createdAt`, `@@index([userId])`
-- [ ] `pnpm --filter backend exec prisma generate` succeeds
+- [x] `User` model: `id` (cuid), `email` (unique), `passwordHash`, `timezone`, `createdAt`, `updatedAt`, `refreshTokens` relation
+- [x] `RefreshToken` model: `id`, `userId` (+ relation), `tokenHash` (unique), `expiresAt`, `revokedAt` (nullable), `createdAt`, `@@index([userId])`
+- [x] `pnpm --filter backend exec prisma generate` succeeds
 
 **Tests**: none (schema/build gate only)
 **Gate**: build — `pnpm --filter backend typecheck`
@@ -165,9 +165,9 @@ T28 → T29
 - Skill: NONE
 
 **Done when**:
-- [ ] `AppError` interface matches design.md exactly
-- [ ] `AppException` stores `appError` and sets `Error.message` to `appError.code`
-- [ ] Unit test: constructing `AppException({code:'X'})` exposes `.appError.code === 'X'` and `.message === 'X'`
+- [x] `AppError` interface matches design.md exactly
+- [x] `AppException` stores `appError` and sets `Error.message` to `appError.code`
+- [x] Unit test: constructing `AppException({code:'X'})` exposes `.appError.code === 'X'` and `.message === 'X'`
 
 **Tests**: unit
 **Gate**: quick — `pnpm --filter backend exec vitest run src/shared/errors/app-exception.test.ts`
@@ -189,10 +189,10 @@ T28 → T29
 - Skill: NONE
 
 **Done when**:
-- [ ] `ERROR_CATALOG.VALIDATION_FAILED` → `{status: 400, title: ...}`
-- [ ] `ERROR_CATALOG.INTERNAL_ERROR` → `{status: 500, title: ...}`
-- [ ] Merge is a plain object spread so a later module catalog (T14) can extend it without changing this file's exported shape
-- [ ] Unit test asserts both entries' `status`
+- [x] `ERROR_CATALOG.VALIDATION_FAILED` → `{status: 400, title: ...}`
+- [x] `ERROR_CATALOG.INTERNAL_ERROR` → `{status: 500, title: ...}`
+- [x] Merge is a plain object spread so a later module catalog (T14) can extend it without changing this file's exported shape
+- [x] Unit test asserts both entries' `status`
 
 **Tests**: unit
 **Gate**: quick — `pnpm --filter backend exec vitest run src/shared/errors/error-catalog.test.ts`
@@ -214,9 +214,9 @@ T28 → T29
 - Skill: NONE
 
 **Done when**:
-- [ ] `ok(v)` → `{ok:true, value:v}`; `err(e)` → `{ok:false, error:e}`
-- [ ] `unwrap(ok(v))` returns `v`
-- [ ] `unwrap(err(e))` throws `AppException` whose `.appError === e`
+- [x] `ok(v)` → `{ok:true, value:v}`; `err(e)` → `{ok:false, error:e}`
+- [x] `unwrap(ok(v))` returns `v`
+- [x] `unwrap(err(e))` throws `AppException` whose `.appError === e`
 
 **Tests**: unit
 **Gate**: quick — `pnpm --filter backend exec vitest run src/shared/result.test.ts`
@@ -238,9 +238,9 @@ T28 → T29
 - Skill: NONE
 
 **Done when**:
-- [ ] Valid input against a test `.strict()` Zod schema passes through parsed/typed
-- [ ] Invalid input (missing field, wrong type) throws `AppException` with `code: 'VALIDATION_FAILED'` and `meta.errors` populated
-- [ ] Extra/unknown field on a `.strict()` schema throws the same way (AUTH-20 mechanism)
+- [x] Valid input against a test `.strict()` Zod schema passes through parsed/typed
+- [x] Invalid input (missing field, wrong type) throws `AppException` with `code: 'VALIDATION_FAILED'` and `meta.errors` populated
+- [x] Extra/unknown field on a `.strict()` schema throws the same way (AUTH-20 mechanism)
 
 **Tests**: unit
 **Gate**: quick — `pnpm --filter backend exec vitest run src/shared/validation/zod-validation.pipe.test.ts`
@@ -262,9 +262,9 @@ T28 → T29
 - Skill: NONE
 
 **Done when**:
-- [ ] A minimal test Nest app with one throwing controller route, bootstrapped in the test, registers this filter and returns `application/problem+json` with `type/title/status/detail/instance/code` for a thrown `AppException`
-- [ ] A route throwing a plain `Error` (unexpected) returns `500` + `code: 'INTERNAL_ERROR'`, no stack trace in the body
-- [ ] `VALIDATION_FAILED` case includes the `errors[]` array from `meta`
+- [x] A minimal test Nest app with one throwing controller route, bootstrapped in the test, registers this filter and returns `application/problem+json` with `type/title/status/detail/instance/code` for a thrown `AppException`
+- [x] A route throwing a plain `Error` (unexpected) returns `500` + `code: 'INTERNAL_ERROR'`, no stack trace in the body
+- [x] `VALIDATION_FAILED` case includes the `errors[]` array from `meta`
 
 **Tests**: integration (no DB — bootstraps a throwaway Nest app only)
 **Gate**: quick — `pnpm --filter backend exec vitest run src/shared/filters/problem-details.filter.spec.ts`
@@ -286,9 +286,9 @@ T28 → T29
 - Skill: NONE
 
 **Done when**:
-- [ ] `PrismaService.onModuleInit` calls `$connect()`, `onModuleDestroy` calls `$disconnect()`
-- [ ] `PrismaModule` is `@Global()` and exports `PrismaService`
-- [ ] No connection attempted at import time (only on Nest lifecycle hooks) — verified by a build-only check, no live DB needed here
+- [x] `PrismaService.onModuleInit` calls `$connect()`, `onModuleDestroy` calls `$disconnect()`
+- [x] `PrismaModule` is `@Global()` and exports `PrismaService`
+- [x] No connection attempted at import time (only on Nest lifecycle hooks) — verified by a build-only check, no live DB needed here
 
 **Tests**: none (build gate only — connection behavior gets real coverage once T9's harness exercises it)
 **Gate**: build — `pnpm --filter backend typecheck`
@@ -335,8 +335,8 @@ T28 → T29
 - Skill: NONE
 
 **Done when**:
-- [ ] `new Email(' Foo@X.com ').value === 'foo@x.com'`
-- [ ] `new Email('a@b.com').equals(new Email('A@B.com'))` is `true`
+- [x] `new Email(' Foo@X.com ').value === 'foo@x.com'`
+- [x] `new Email('a@b.com').equals(new Email('A@B.com'))` is `true`
 
 **Tests**: unit
 **Gate**: quick — `pnpm --filter backend exec vitest run src/identity/domain/value-objects/email.test.ts`
@@ -358,9 +358,9 @@ T28 → T29
 - Skill: NONE
 
 **Done when**:
-- [ ] `new Timezone('America/Sao_Paulo').value === 'America/Sao_Paulo'`
-- [ ] `new Timezone('Not/AZone')` throws
-- [ ] `isValidIanaTimezone('America/Sao_Paulo') === true`, `isValidIanaTimezone('bogus') === false`
+- [x] `new Timezone('America/Sao_Paulo').value === 'America/Sao_Paulo'`
+- [x] `new Timezone('Not/AZone')` throws
+- [x] `isValidIanaTimezone('America/Sao_Paulo') === true`, `isValidIanaTimezone('bogus') === false`
 
 **Tests**: unit
 **Gate**: quick — `pnpm --filter backend exec vitest run src/identity/domain/value-objects/timezone.test.ts`
@@ -382,8 +382,8 @@ T28 → T29
 - Skill: NONE
 
 **Done when**:
-- [ ] Both classes match design.md's field lists and types exactly
-- [ ] No TypeScript errors; no Prisma/Nest imports (ORM-free per CLAUDE.md)
+- [x] Both classes match design.md's field lists and types exactly
+- [x] No TypeScript errors; no Prisma/Nest imports (ORM-free per CLAUDE.md)
 
 **Tests**: none (build gate only — no branches)
 **Gate**: build — `pnpm --filter backend typecheck`
@@ -405,8 +405,8 @@ T28 → T29
 - Skill: NONE
 
 **Done when**:
-- [ ] All five interfaces present with exact method signatures from design.md
-- [ ] `UserRepositoryPort.create` returns `Promise<Result<User, AuthError>>` (imports `AuthError` type — forward-declared here or imported once T14 lands; if T14 hasn't landed yet, stub the type locally and note the TODO — resolved when T14 completes)
+- [x] All five interfaces present with exact method signatures from design.md
+- [x] `UserRepositoryPort.create` returns `Promise<Result<User, AuthError>>` (imports `AuthError` type — forward-declared here or imported once T14 lands; if T14 hasn't landed yet, stub the type locally and note the TODO — resolved when T14 completes)
 
 **Tests**: none (build gate only — interfaces have no runtime behavior)
 **Gate**: build — `pnpm --filter backend typecheck`
@@ -428,9 +428,9 @@ T28 → T29
 - Skill: NONE
 
 **Done when**:
-- [ ] All 7 codes present: `AUTH_DUPLICATE_EMAIL`, `AUTH_INVALID_CREDENTIALS`, `AUTH_RATE_LIMITED`, `AUTH_MISSING_REFRESH_TOKEN`, `AUTH_INVALID_REFRESH_TOKEN`, `AUTH_REFRESH_TOKEN_EXPIRED`, `AUTH_REFRESH_TOKEN_REUSED`
-- [ ] Unit test asserts each code's `status` in the merged `ERROR_CATALOG` matches design.md's table (409 for duplicate email, 401 for the other six, 429 handled separately — note: `AUTH_RATE_LIMITED` is 429, not 401; verify against design.md table precisely)
-- [ ] `error-catalog.test.ts` (from T4) extended to assert the merge includes at least one `AUTH_*` code after this task, proving composition works
+- [x] All 7 codes present: `AUTH_DUPLICATE_EMAIL`, `AUTH_INVALID_CREDENTIALS`, `AUTH_RATE_LIMITED`, `AUTH_MISSING_REFRESH_TOKEN`, `AUTH_INVALID_REFRESH_TOKEN`, `AUTH_REFRESH_TOKEN_EXPIRED`, `AUTH_REFRESH_TOKEN_REUSED`
+- [x] Unit test asserts each code's `status` in the merged `ERROR_CATALOG` matches design.md's table (409 for duplicate email, 401 for the other six, 429 handled separately — note: `AUTH_RATE_LIMITED` is 429, not 401; verify against design.md table precisely)
+- [x] `error-catalog.test.ts` (from T4) extended to assert the merge includes at least one `AUTH_*` code after this task, proving composition works
 
 **Tests**: unit
 **Gate**: quick — `pnpm --filter backend exec vitest run src/identity/domain/errors/auth-error.test.ts src/shared/errors/error-catalog.test.ts`
@@ -452,7 +452,7 @@ T28 → T29
 - Skill: NONE
 
 **Done when**:
-- [ ] Class matches design.md's field list; no TypeScript errors
+- [x] Class matches design.md's field list; no TypeScript errors
 
 **Tests**: none (build gate only)
 **Gate**: build — `pnpm --filter backend typecheck`

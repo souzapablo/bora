@@ -135,28 +135,28 @@ Every ambiguity is resolved or recorded here — nothing is left silently unclea
 
 | Requirement ID | Story | Phase | Status |
 | --- | --- | --- | --- |
-| AUTH-01 | P1: Register — success | Design | Pending |
-| AUTH-02 | P1: Register — duplicate email | Design | Pending |
-| AUTH-03 | P1: Register — password validation | Design | Pending |
-| AUTH-04 | P1: Register — email/timezone validation | Design | Pending |
-| AUTH-05 | P1: Register — concurrent duplicate race | Design | Pending |
-| AUTH-06 | P1: Register — IP throttle | Design | Pending |
-| AUTH-07 | P1: Login — success | Design | Pending |
-| AUTH-08 | P1: Login — unknown email generic error | Design | Pending |
-| AUTH-09 | P1: Login — wrong password generic error | Design | Pending |
-| AUTH-10 | P1: Login — rate-limit lockout | Design | Pending |
-| AUTH-11 | P1: Login — failure counter reset | Design | Pending |
-| AUTH-12 | P1: Refresh — success/rotation | Design | Pending |
-| AUTH-13 | P1: Refresh — missing cookie | Design | Pending |
-| AUTH-14 | P1: Refresh — expired token | Design | Pending |
-| AUTH-15 | P1: Refresh — reuse detection/family revocation | Design | Pending |
-| AUTH-16 | P1: Refresh — unmatched token | Design | Pending |
-| AUTH-17 | P2: Logout — success | Design | Pending |
-| AUTH-18 | P2: Logout — idempotent no-cookie | Design | Pending |
-| AUTH-19 | Edge case: email normalization | Design | Pending |
-| AUTH-20 | Edge case: strict Zod schemas / tampered cookie | Design | Pending |
+| AUTH-01 | P1: Register — success | Verified | ✅ Verified |
+| AUTH-02 | P1: Register — duplicate email | Verified | ✅ Verified |
+| AUTH-03 | P1: Register — password validation | Verified | ✅ Verified |
+| AUTH-04 | P1: Register — email/timezone validation | Verified | ✅ Verified |
+| AUTH-05 | P1: Register — concurrent duplicate race | Verified | ✅ Verified |
+| AUTH-06 | P1: Register — IP throttle | Verified | ✅ Verified |
+| AUTH-07 | P1: Login — success | Verified | ✅ Verified |
+| AUTH-08 | P1: Login — unknown email generic error | Verified | ✅ Verified |
+| AUTH-09 | P1: Login — wrong password generic error | Verified | ✅ Verified |
+| AUTH-10 | P1: Login — rate-limit lockout | Verified | ✅ Verified |
+| AUTH-11 | P1: Login — failure counter reset | Verified | ✅ Verified |
+| AUTH-12 | P1: Refresh — success/rotation | Verified | ✅ Verified |
+| AUTH-13 | P1: Refresh — missing cookie | Verified | ✅ Verified |
+| AUTH-14 | P1: Refresh — expired token | Verified | ✅ Verified |
+| AUTH-15 | P1: Refresh — reuse detection/family revocation | Verified | ✅ Verified |
+| AUTH-16 | P1: Refresh — unmatched token | Verified | ✅ Verified |
+| AUTH-17 | P2: Logout — success | Verified | ✅ Verified |
+| AUTH-18 | P2: Logout — idempotent no-cookie | Verified | ✅ Verified |
+| AUTH-19 | Edge case: email normalization | Verified | ✅ Verified |
+| AUTH-20 | Edge case: strict Zod schemas / tampered cookie | Verified | ✅ Verified |
 
-**Coverage:** 20 total, 0 mapped to tasks (Tasks phase not yet run), 20 unmapped ⚠️
+**Coverage:** 20 total, 20/20 verified against `.specs/features/bora-21-auth-backend/validation.md`, 0 unmapped.
 
 ---
 
