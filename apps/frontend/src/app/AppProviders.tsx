@@ -3,6 +3,7 @@ import { lazy, Suspense } from "react";
 import { BrowserRouter } from "react-router-dom";
 
 import { queryClient } from "../lib/query/queryClient";
+
 import { AppRoutes } from "./routes";
 
 // Dev-only. `import.meta.env.DEV` is statically `false` in production, so Vite dead-code-eliminates
