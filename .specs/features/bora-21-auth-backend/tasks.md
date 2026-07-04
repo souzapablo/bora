@@ -619,7 +619,7 @@ T28 → T29
 - Skill: NONE
 
 **Done when**:
-- [ ] All 8 constants present with the exact values from design.md's Components section
+- [x] All 8 constants present with the exact values from design.md's Components section
 
 **Tests**: none (build gate only)
 **Gate**: build — `pnpm --filter backend typecheck`
@@ -641,10 +641,10 @@ T28 → T29
 - Skill: NONE
 
 **Done when**:
-- [ ] AUTH-03: password `< 8` chars fails `registerSchema.safeParse`
-- [ ] AUTH-04: malformed email fails; invalid IANA timezone string fails
-- [ ] AUTH-20: an extra unknown field fails both schemas (`.strict()`)
-- [ ] A fully valid register payload and a fully valid login payload both pass
+- [x] AUTH-03: password `< 8` chars fails `registerSchema.safeParse`
+- [x] AUTH-04: malformed email fails; invalid IANA timezone string fails
+- [x] AUTH-20: an extra unknown field fails both schemas (`.strict()`)
+- [x] A fully valid register payload and a fully valid login payload both pass
 
 **Tests**: unit
 **Gate**: quick — `pnpm --filter backend exec vitest run src/identity/application/dto/register.schema.test.ts src/identity/application/dto/login.schema.test.ts`
@@ -666,10 +666,10 @@ T28 → T29
 - Skill: NONE
 
 **Done when**:
-- [ ] AUTH-01: success returns `ok(AuthSuccess)`, `EventEmitter2.emit` called with a `UserRegistered` payload
-- [ ] AUTH-02: mocked repo returns `err(AUTH_DUPLICATE_EMAIL)` → use-case returns that error and the mocked hasher's `hash()` is asserted **not called**
-- [ ] AUTH-06: mocked rate limiter `isBlocked` returns `true` → returns `err(AUTH_RATE_LIMITED)` before any repo/hasher call
-- [ ] AUTH-05 (unit-level): repo's `create()` mock returns `err(AUTH_DUPLICATE_EMAIL)` (simulating the P2002 race outcome) → use-case propagates it unchanged, no `500`
+- [x] AUTH-01: success returns `ok(AuthSuccess)`, `EventEmitter2.emit` called with a `UserRegistered` payload
+- [x] AUTH-02: mocked repo returns `err(AUTH_DUPLICATE_EMAIL)` → use-case returns that error and the mocked hasher's `hash()` is asserted **not called**
+- [x] AUTH-06: mocked rate limiter `isBlocked` returns `true` → returns `err(AUTH_RATE_LIMITED)` before any repo/hasher call
+- [x] AUTH-05 (unit-level): repo's `create()` mock returns `err(AUTH_DUPLICATE_EMAIL)` (simulating the P2002 race outcome) → use-case propagates it unchanged, no `500`
 
 **Tests**: unit
 **Gate**: quick — `pnpm --filter backend exec vitest run src/identity/application/use-cases/register-user.use-case.test.ts`
@@ -691,11 +691,11 @@ T28 → T29
 - Skill: NONE
 
 **Done when**:
-- [ ] AUTH-07: valid credentials → `ok(AuthSuccess)`
-- [ ] AUTH-08: unknown email → `err(AUTH_INVALID_CREDENTIALS)` **and** mocked `hasher.verify(DUMMY_HASH, ...)` is asserted called
-- [ ] AUTH-09: wrong password for existing user → identical `err(AUTH_INVALID_CREDENTIALS)`
-- [ ] AUTH-10: mocked rate limiter `isBlocked` true → `err(AUTH_RATE_LIMITED)`, mocked `hasher.verify` asserted **not called**
-- [ ] AUTH-11: success path calls `rateLimiter.reset(key)`
+- [x] AUTH-07: valid credentials → `ok(AuthSuccess)`
+- [x] AUTH-08: unknown email → `err(AUTH_INVALID_CREDENTIALS)` **and** mocked `hasher.verify(DUMMY_HASH, ...)` is asserted called
+- [x] AUTH-09: wrong password for existing user → identical `err(AUTH_INVALID_CREDENTIALS)`
+- [x] AUTH-10: mocked rate limiter `isBlocked` true → `err(AUTH_RATE_LIMITED)`, mocked `hasher.verify` asserted **not called**
+- [x] AUTH-11: success path calls `rateLimiter.reset(key)`
 
 **Tests**: unit
 **Gate**: quick — `pnpm --filter backend exec vitest run src/identity/application/use-cases/login-user.use-case.test.ts`
@@ -717,11 +717,11 @@ T28 → T29
 - Skill: NONE
 
 **Done when**:
-- [ ] AUTH-12: valid unrevoked/unexpired token → old row revoked, new row created, new access token issued
-- [ ] AUTH-13: `rawToken === undefined` → `err(AUTH_MISSING_REFRESH_TOKEN)`, no repo call
-- [ ] AUTH-14: mocked `findByTokenHash` returns a row with `expiresAt` in the past → `err(AUTH_REFRESH_TOKEN_EXPIRED)`, no new token issued
-- [ ] AUTH-15 (unit-level): mocked `findByTokenHash` returns a row with `revokedAt` set → `revokeAllActiveForUser(userId)` asserted called, returns `err(AUTH_REFRESH_TOKEN_REUSED)`
-- [ ] AUTH-16: mocked `findByTokenHash` returns `null` → `err(AUTH_INVALID_REFRESH_TOKEN)`
+- [x] AUTH-12: valid unrevoked/unexpired token → old row revoked, new row created, new access token issued
+- [x] AUTH-13: `rawToken === undefined` → `err(AUTH_MISSING_REFRESH_TOKEN)`, no repo call
+- [x] AUTH-14: mocked `findByTokenHash` returns a row with `expiresAt` in the past → `err(AUTH_REFRESH_TOKEN_EXPIRED)`, no new token issued
+- [x] AUTH-15 (unit-level): mocked `findByTokenHash` returns a row with `revokedAt` set → `revokeAllActiveForUser(userId)` asserted called, returns `err(AUTH_REFRESH_TOKEN_REUSED)`
+- [x] AUTH-16: mocked `findByTokenHash` returns `null` → `err(AUTH_INVALID_REFRESH_TOKEN)`
 
 **Tests**: unit
 **Gate**: quick — `pnpm --filter backend exec vitest run src/identity/application/use-cases/refresh-session.use-case.test.ts`
@@ -743,8 +743,8 @@ T28 → T29
 - Skill: NONE
 
 **Done when**:
-- [ ] AUTH-17: valid token → mocked `revoke()` called with the matching row's id
-- [ ] AUTH-18: `undefined`/unmatched token → resolves without throwing, `revoke()` not called
+- [x] AUTH-17: valid token → mocked `revoke()` called with the matching row's id
+- [x] AUTH-18: `undefined`/unmatched token → resolves without throwing, `revoke()` not called
 
 **Tests**: unit
 **Gate**: quick — `pnpm --filter backend exec vitest run src/identity/application/use-cases/logout.use-case.test.ts`
