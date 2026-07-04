@@ -474,8 +474,8 @@ T28 → T29
 - Skill: NONE
 
 **Done when**:
-- [ ] `hash(plain)` returns an argon2id string; `verify(hash(plain), plain)` is `true`; `verify(hash(plain), 'wrong')` is `false`
-- [ ] `verify(DUMMY_HASH, 'anything')` resolves without throwing (proves it's a well-formed hash suitable for the timing-safe path)
+- [x] `hash(plain)` returns an argon2id string; `verify(hash(plain), plain)` is `true`; `verify(hash(plain), 'wrong')` is `false`
+- [x] `verify(DUMMY_HASH, 'anything')` resolves without throwing (proves it's a well-formed hash suitable for the timing-safe path)
 
 **Tests**: unit
 **Gate**: quick — `pnpm --filter backend exec vitest run src/identity/infrastructure/hashing/argon2-password-hasher.test.ts`
@@ -497,9 +497,9 @@ T28 → T29
 - Skill: NONE
 
 **Done when**:
-- [ ] `generateRawToken()` returns a base64url string, two calls produce different values
-- [ ] `hashToken(x)` is deterministic (same input → same output) and different for different inputs
-- [ ] `hashToken` output is a 64-char hex string (sha256)
+- [x] `generateRawToken()` returns a base64url string, two calls produce different values
+- [x] `hashToken(x)` is deterministic (same input → same output) and different for different inputs
+- [x] `hashToken` output is a 64-char hex string (sha256)
 
 **Tests**: unit
 **Gate**: quick — `pnpm --filter backend exec vitest run src/identity/infrastructure/tokens/refresh-token-generator.test.ts`
@@ -521,9 +521,9 @@ T28 → T29
 - Skill: NONE
 
 **Done when**:
-- [ ] `issue({sub:'u1'})` returns a JWT string
-- [ ] `verify(issue({sub:'u1'}))` returns `{sub:'u1'}`
-- [ ] `verify('tampered.token.value')` throws/rejects
+- [x] `issue({sub:'u1'})` returns a JWT string
+- [x] `verify(issue({sub:'u1'}))` returns `{sub:'u1'}`
+- [x] `verify('tampered.token.value')` throws/rejects
 
 **Tests**: unit
 **Gate**: quick — `pnpm --filter backend exec vitest run src/identity/infrastructure/tokens/jwt-access-token-issuer.test.ts`
@@ -545,10 +545,10 @@ T28 → T29
 - Skill: NONE
 
 **Done when**:
-- [ ] Under threshold: `isBlocked` is `false`
-- [ ] At/over threshold within window: `isBlocked` is `true` (use vitest fake timers to control `windowMs`)
-- [ ] `reset(key)` clears prior attempts for that key
-- [ ] Entries older than `windowMs` are pruned and don't count toward the block
+- [x] Under threshold: `isBlocked` is `false`
+- [x] At/over threshold within window: `isBlocked` is `true` (use vitest fake timers to control `windowMs`)
+- [x] `reset(key)` clears prior attempts for that key
+- [x] Entries older than `windowMs` are pruned and don't count toward the block
 
 **Tests**: unit
 **Gate**: quick — `pnpm --filter backend exec vitest run src/identity/infrastructure/rate-limit/in-memory-rate-limiter.test.ts`
@@ -570,10 +570,10 @@ T28 → T29
 - Skill: NONE
 
 **Done when**:
-- [ ] `create()` persists a `User` row and returns `ok(User)` with hashed password stored verbatim (repo doesn't hash — that's the use-case's job)
-- [ ] `create()` on a pre-existing email returns `err({code:'AUTH_DUPLICATE_EMAIL'})`, never throws, no row created
-- [ ] AUTH-05: two concurrent `create()` calls for the same normalized email against the real Testcontainers Postgres — exactly one resolves `ok`, the other resolves `err(AUTH_DUPLICATE_EMAIL)`, never a thrown exception, and a subsequent count query shows exactly one row
-- [ ] `findByEmail` returns `null` for no match, mapped `User` for a match
+- [x] `create()` persists a `User` row and returns `ok(User)` with hashed password stored verbatim (repo doesn't hash — that's the use-case's job)
+- [x] `create()` on a pre-existing email returns `err({code:'AUTH_DUPLICATE_EMAIL'})`, never throws, no row created
+- [x] AUTH-05: two concurrent `create()` calls for the same normalized email against the real Testcontainers Postgres — exactly one resolves `ok`, the other resolves `err(AUTH_DUPLICATE_EMAIL)`, never a thrown exception, and a subsequent count query shows exactly one row
+- [x] `findByEmail` returns `null` for no match, mapped `User` for a match
 
 **Tests**: integration
 **Gate**: full — `pnpm --filter backend test` (⚠️ Docker)
@@ -595,9 +595,9 @@ T28 → T29
 - Skill: NONE
 
 **Done when**:
-- [ ] `create`/`findByTokenHash` round-trip correctly
-- [ ] `revoke(id)` sets `revokedAt` on exactly that row
-- [ ] AUTH-15 repo-level: `revokeAllActiveForUser(userId)` revokes every row for that `userId` where `revokedAt IS NULL`, leaves already-revoked rows' original `revokedAt` untouched (or re-revokes idempotently — assert it doesn't error), and leaves other users' active rows untouched
+- [x] `create`/`findByTokenHash` round-trip correctly
+- [x] `revoke(id)` sets `revokedAt` on exactly that row
+- [x] AUTH-15 repo-level: `revokeAllActiveForUser(userId)` revokes every row for that `userId` where `revokedAt IS NULL`, leaves already-revoked rows' original `revokedAt` untouched (or re-revokes idempotently — assert it doesn't error), and leaves other users' active rows untouched
 
 **Tests**: integration
 **Gate**: full — `pnpm --filter backend test` (⚠️ Docker)
