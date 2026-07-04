@@ -58,3 +58,7 @@ Backend tests are tiered — unit tests run with no external dependencies; integ
 ## Backend API (Identity & Access)
 
 The `/auth/register`, `/auth/login`, `/auth/refresh`, and `/auth/logout` endpoints are implemented (see BORA-21). Full spec, design, and QA test checklist: `.specs/features/bora-21-auth-backend/`.
+
+### API documentation
+
+With the backend running, interactive API docs are served at `http://localhost:3000/docs` ([Scalar](https://github.com/scalar/scalar) API Reference), backed by an OpenAPI 3.1 document at `http://localhost:3000/docs/openapi.json`. The document is generated from the same Zod request schemas the controllers validate against (`@asteasolutions/zod-to-openapi`), so request shapes shown in the docs can't drift from what the API actually accepts. See `apps/backend/src/shared/openapi/document.ts`.
