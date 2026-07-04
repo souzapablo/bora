@@ -21,7 +21,7 @@ apps/backend/src/
   productivity/{domain,application,infrastructure}/
   gamification/{domain,application,infrastructure}/
   mental-health/{domain,application,infrastructure}/
-  shared/            # EventEmitter2 setup, AbacGuard, Zod validation pipe
+  shared/            # EventEmitter2 setup, AbacGuard, Zod validation pipe, Result type + AppException + ProblemDetailsFilter + error catalog
 ```
 
 A module never queries another module's tables directly, even though all four share one Postgres schema. Access only through that module's own repository.
@@ -31,6 +31,12 @@ A module never queries another module's tables directly, even though all four sh
 `domain/` never imports Prisma, TypeORM, or NestJS decorators. It is plain TypeScript: aggregates, value objects, domain services.
 
 Persistence lives entirely in `infrastructure/`: a Repository implementation plus a Mapper that translates Prisma rows to domain objects and back. `application/` (controllers, use-cases) depends on `domain/` and the Repository interface — never on Prisma types directly.
+
+## Errors are values, not exceptions
+
+Every use-case returns `Result<T, E>` (`shared/result.ts`) for expected outcomes (duplicate email, invalid credentials, rate-limited, business-rule violations, etc.) — `domain/` and `application/use-cases` never throw for these. There are exactly two sanctioned throw sites app-wide: the shared `ZodValidationPipe` (a Nest `PipeTransform` can only reject by throwing) and the controller's `unwrap()` call (Nest's non-2xx response pipeline is inherently exception-driven). Both throw the same `AppException`, wrapping a `{ code, detail?, meta? }` error.
+
+Every HTTP error response — validation failures, domain errors, and genuinely unexpected exceptions alike — is RFC 7807 Problem Details (`application/problem+json`), emitted by one global `ProblemDetailsFilter`. Error codes are namespaced `<MODULE>_<REASON>` (e.g. `AUTH_DUPLICATE_EMAIL`); each module owns its own error-catalog file, merged into one `shared/errors/error-catalog.ts`.
 
 ## Cross-module communication
 
