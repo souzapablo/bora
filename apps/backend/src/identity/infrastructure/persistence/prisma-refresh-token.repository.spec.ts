@@ -49,7 +49,7 @@ describe("PrismaRefreshTokenRepository (integration)", () => {
   it("revoke(id) sets revokedAt on exactly that row", async () => {
     const userId = await createTestUser("erin@example.com");
     const tokenA = await repo.create({ userId, tokenHash: "hash-a", expiresAt: futureDate() });
-    const tokenB = await repo.create({ userId, tokenHash: "hash-b", expiresAt: futureDate() });
+    await repo.create({ userId, tokenHash: "hash-b", expiresAt: futureDate() });
 
     await repo.revoke(tokenA.id);
 
@@ -63,13 +63,13 @@ describe("PrismaRefreshTokenRepository (integration)", () => {
     const userId = await createTestUser("frank@example.com");
     const otherUserId = await createTestUser("gina@example.com");
 
-    const active1 = await repo.create({ userId, tokenHash: "u-active-1", expiresAt: futureDate() });
-    const active2 = await repo.create({ userId, tokenHash: "u-active-2", expiresAt: futureDate() });
+    await repo.create({ userId, tokenHash: "u-active-1", expiresAt: futureDate() });
+    await repo.create({ userId, tokenHash: "u-active-2", expiresAt: futureDate() });
     const alreadyRevoked = await repo.create({ userId, tokenHash: "u-revoked", expiresAt: futureDate() });
     await repo.revoke(alreadyRevoked.id);
     const preRevokedAt = (await repo.findByTokenHash("u-revoked"))?.revokedAt;
 
-    const otherActive = await repo.create({
+    await repo.create({
       userId: otherUserId,
       tokenHash: "other-active",
       expiresAt: futureDate(),
