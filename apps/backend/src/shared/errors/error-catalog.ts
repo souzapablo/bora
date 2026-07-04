@@ -1,3 +1,5 @@
+import { AUTH_ERROR_CATALOG } from "../../identity/domain/errors/auth-error";
+
 export interface ErrorCatalogEntry {
   status: number;
   title: string;
@@ -14,4 +16,5 @@ const INTERNAL_ERROR_CATALOG: Record<string, ErrorCatalogEntry> = {
 export const ERROR_CATALOG: Record<string, ErrorCatalogEntry> = {
   ...VALIDATION_ERROR_CATALOG,
   ...INTERNAL_ERROR_CATALOG,
+  ...AUTH_ERROR_CATALOG,
 };
