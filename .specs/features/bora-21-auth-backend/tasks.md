@@ -310,13 +310,13 @@ T28 → T29
 - Skill: NONE
 
 **Done when**:
-- [ ] `prisma/migrations/` folder exists in the repo with a migration matching T2's schema, generated against the ephemeral container
-- [ ] Harness exposes `setupTestDb()` (starts container + migrates + returns a connected `PrismaClient`) and `resetDb(prisma)` (truncates both tables)
-- [ ] A smoke test (`testcontainers-postgres.spec.ts`) starts the harness, inserts and reads back one row, calls `resetDb`, confirms the table is empty, tears down cleanly
-- [ ] Documented at the top of the file: requires a reachable Docker daemon; CI/local runs without one will fail this and every task downstream that depends on it
+- [x] `prisma/migrations/` folder exists in the repo with a migration matching T2's schema, generated against the ephemeral container
+- [x] Harness exposes `setupTestDb()` (starts container + migrates + returns a connected `PrismaClient`) and `resetDb(prisma)` (truncates both tables)
+- [x] A smoke test (`testcontainers-postgres.spec.ts`) starts the harness, inserts and reads back one row, calls `resetDb`, confirms the table is empty, tears down cleanly
+- [x] Documented at the top of the file: requires a reachable Docker daemon; CI/local runs without one will fail this and every task downstream that depends on it
 
 **Tests**: integration
-**Gate**: full — `pnpm --filter backend test` (⚠️ Docker — not runnable in this sandbox; run where Docker is available and confirm before marking this task done)
+**Gate**: full — `pnpm --filter backend test` (⚠️ Docker — CONFIRMED passing via WSL2 Docker daemon exposed over `DOCKER_HOST=tcp://127.0.0.1:2375`; initial authoring pass had no Docker reachable, which surfaced a real Windows bug — `execFileSync` invoking the `prisma.CMD` shim without `shell:true` failed with EINVAL — fixed by resolving and invoking `prisma/build/index.js` directly via `process.execPath`)
 
 **Commit**: `test(backend): add Testcontainers Postgres harness and initial migration`
 

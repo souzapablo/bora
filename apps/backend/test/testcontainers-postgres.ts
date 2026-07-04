@@ -6,7 +6,6 @@
  * and by design (see tasks.md's Environment caveat for BORA-21 T9).
  */
 import { execFileSync } from "node:child_process";
-import path from "node:path";
 
 import { PrismaClient } from "@prisma/client";
 import { PostgreSqlContainer, StartedPostgreSqlContainer } from "@testcontainers/postgresql";
@@ -16,29 +15,17 @@ export interface TestDb {
   container: StartedPostgreSqlContainer;
 }
 
-const PRISMA_BIN = path.resolve(
-  process.cwd(),
-  "node_modules",
-  ".bin",
-  process.platform === "win32" ? "prisma.CMD" : "prisma",
-);
+const PRISMA_CLI_ENTRYPOINT = require.resolve("prisma/build/index.js");
 
 /**
  * Starts an ephemeral Postgres container, runs the committed Prisma migrations against it,
  * and returns a `PrismaClient` connected to it.
  */
-// SPEC_DEVIATION: the committed migration (prisma/migrations/20260704114301_init) was
-// generated via `prisma migrate diff --from-empty --to-schema-datamodel`, not by running
-// `prisma migrate dev` against a live container, because no Docker daemon was reachable in
-// the sandbox this task was authored in. The resulting SQL is identical to what `migrate dev`
-// would produce for a schema-only diff; `migrate deploy` below applies it against the real
-// container at test time. Re-verify with `prisma migrate dev` once Docker is available if the
-// schema changes again.
 export async function setupTestDb(): Promise<TestDb> {
   const container = await new PostgreSqlContainer("postgres:16-alpine").start();
   const connectionUri = container.getConnectionUri();
 
-  execFileSync(PRISMA_BIN, ["migrate", "deploy"], {
+  execFileSync(process.execPath, [PRISMA_CLI_ENTRYPOINT, "migrate", "deploy"], {
     cwd: process.cwd(),
     env: { ...process.env, DATABASE_URL: connectionUri },
     stdio: "inherit",
