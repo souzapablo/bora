@@ -9,7 +9,20 @@ Implement these tasks with the `tlc-spec-driven` skill: **activate it by name an
 ---
 
 **Design**: `.specs/features/bora-30-frontend-app-shell-infra/design.md`
-**Status**: Draft
+**Status**: Done — all 8 tasks committed (T1–T8); Verifier PASS (6/6 mutants killed), see `validation.md`
+
+**Task completion** (commit range `c1aa3a2..3cbe76c`):
+
+| Task | Commit | Tests |
+| ---- | ------ | ----- |
+| T1: add deps | `47bc34e` | build gate |
+| T2: errors.ts | `49c6a47` | 4 unit |
+| T3: client.ts | `728aa08` | 16 unit |
+| T4: queryClient.ts | `d2943e4` | 2 unit |
+| T5: RequireAuth.tsx | `4da3ad9` | 4 unit |
+| T6: routes.tsx | `10ee51a` | 2 unit |
+| T7: AppProviders.tsx | `7b45389` | 2 unit |
+| T8: main.tsx swap + cleanup | `3cbe76c` | build gate (75 total) |
 
 ---
 

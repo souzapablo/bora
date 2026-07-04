@@ -85,7 +85,7 @@
 **Acceptance Criteria**:
 
 1. WHEN any code calls the client's request function THEN it SHALL build the URL from `VITE_API_URL` + a relative path, set `Content-Type: application/json`, and send `credentials: "include"` (required for the httpOnly refresh cookie).
-2. WHEN the backend responds with a non-2xx status and a valid `application/problem+json` body THEN the client SHALL reject with a typed `ApiError` object (`{ code, title, detail?, status }`) built from that body — never a raw `Response` or untyped `Error`.
+2. WHEN the backend responds with a non-2xx status and a valid `application/problem+json` body THEN the client SHALL reject with a typed `ApiError` object (`{ code, status, detail? }`) built from that body — never a raw `Response` or untyped `Error`. (The RFC 7807 `title` is present on the wire but intentionally not surfaced on `ApiError`: callers branch on the machine-readable `code`, not the human `title` — see `design.md` and AD-005.)
 3. WHEN the `fetch` call itself fails before any HTTP response (offline, DNS, CORS) THEN the client SHALL reject with a distinct typed `ApiNetworkError` so callers can tell "no server reached" apart from a real Problem Details error.
 4. WHEN a non-2xx response body is not valid `problem+json` (malformed or wrong content-type) THEN the client SHALL reject with a generic typed `ApiError` (`code: "UNKNOWN"`) rather than throwing an unhandled parse exception.
 5. WHEN a 2xx response has a JSON body THEN the client SHALL return the parsed JSON as-is (no schema validation inside the client itself — see Out of Scope).
@@ -137,28 +137,30 @@
 
 | Requirement ID | Story | Phase | Task(s) | Status |
 | --------------- | ----------- | ------ | ------- | ------- |
-| SHELL-01 | P1: App shell (provider wiring) | Tasks | T1, T7, T8 | In Tasks |
-| SHELL-02 | P1: App shell (query client defaults) | Tasks | T4 | In Tasks |
-| SHELL-03 | P1: App shell (central route table) | Tasks | T6, T7 | In Tasks |
-| ROUTER-01 | P1: Router (setup + placeholder routes) | Tasks | T1, T6 | In Tasks |
-| ROUTER-02 | P1: Router (RequireAuth props contract) | Tasks | T5 | In Tasks |
-| ROUTER-03 | P1: Router (redirect on disallowed) | Tasks | T5 | In Tasks |
-| ROUTER-04 | P1: Router (render on allowed) | Tasks | T5 | In Tasks |
-| API-01 | P1: API client (request building) | Tasks | T3 | In Tasks |
-| API-02 | P1: API client (typed ApiError decoding) | Tasks | T2, T3 | In Tasks |
-| API-03 | P1: API client (typed ApiNetworkError) | Tasks | T2, T3 | In Tasks |
-| API-04 | P1: API client (malformed error body) | Tasks | T2, T3 | In Tasks |
-| API-05 | P1: API client (2xx passthrough) | Tasks | T3 | In Tasks |
-| API-06 | P1: API client (getAuthHeader hook) | Tasks | T3 | In Tasks |
-| API-07 | P1: API client (onUnauthorized retry-once) | Tasks | T3 | In Tasks |
-| API-08 | P1: API client (no-hooks default behavior) | Tasks | T3 | In Tasks |
-| DEVTOOLS-01 | P2: Query Devtools (dev only) | Tasks | T1, T7, T8 | In Tasks |
+| SHELL-01 | P1: App shell (provider wiring) | Done | T1, T7, T8 | Verified |
+| SHELL-02 | P1: App shell (query client defaults) | Done | T4 | Verified |
+| SHELL-03 | P1: App shell (central route table) | Done | T6, T7 | Verified* |
+| ROUTER-01 | P1: Router (setup + placeholder routes) | Done | T1, T6 | Verified |
+| ROUTER-02 | P1: Router (RequireAuth props contract) | Done | T5 | Verified |
+| ROUTER-03 | P1: Router (redirect on disallowed) | Done | T5 | Verified |
+| ROUTER-04 | P1: Router (render on allowed) | Done | T5 | Verified |
+| API-01 | P1: API client (request building) | Done | T3 | Verified |
+| API-02 | P1: API client (typed ApiError decoding) | Done | T2, T3 | Verified |
+| API-03 | P1: API client (typed ApiNetworkError) | Done | T2, T3 | Verified |
+| API-04 | P1: API client (malformed error body) | Done | T2, T3 | Verified |
+| API-05 | P1: API client (2xx passthrough) | Done | T3 | Verified |
+| API-06 | P1: API client (getAuthHeader hook) | Done | T3 | Verified |
+| API-07 | P1: API client (onUnauthorized retry-once) | Done | T3 | Verified |
+| API-08 | P1: API client (no-hooks default behavior) | Done | T3 | Verified |
+| DEVTOOLS-01 | P2: Query Devtools (dev only) | Done | T1, T7, T8 | Verified* |
 
 **ID format:** `[CATEGORY]-[NUMBER]` (`SHELL`, `ROUTER`, `API`, `DEVTOOLS`)
 
 **Status values:** Pending → In Design → In Tasks → Implementing → Verified
 
-**Coverage:** 16 total, 16 mapped to tasks, 0 unmapped ✅ (see `tasks.md`)
+**Coverage:** 16 total, 16 implemented + Verifier-PASS (6/6 mutants killed) ✅ (see `validation.md`)
+
+**\* Spec-precision boundaries** (non-blocking, per `validation.md`): SHELL-03's "add a route by editing only `routes.tsx`" is a structural property (tests prove the table renders, not the no-rewiring guarantee); DEVTOOLS-01's prod-bundle exclusion is a build-time property verified empirically via a `dist/` bundle spot-check, with the unit test asserting only the DEV-guard mechanism.
 
 ---
 

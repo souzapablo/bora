@@ -44,3 +44,10 @@
 
 ## Handoff
 
+- **Feature**: BORA-30 (Frontend App Shell, Router, API Client, TanStack Query) — **COMPLETE**, Verifier PASS.
+- **Branch**: `feat/bora-30-frontend-app-shell-infra` (9 commits, `c1aa3a2..3cbe76c`). Not yet merged to `main`.
+- **Delivered**: `apps/frontend/src/lib/api/{errors,client}.ts`, `lib/query/queryClient.ts`, `app/{RequireAuth,routes,AppProviders}.tsx`; `main.tsx` now mounts `AppProviders`; placeholder `App.tsx`/`App.test.tsx` removed. Deps added: `react-router-dom` v7, `@tanstack/react-query` v5 (+ devtools, dev-only).
+- **Verification**: 75 unit tests green; typecheck/lint/build clean; DEVTOOLS-01 prod-exclusion confirmed via `dist/` spot-check; discrimination sensor 6/6 mutants killed. Report: `.specs/features/bora-30-frontend-app-shell-infra/validation.md`.
+- **Next step**: merge the branch to `main`, then BORA-22 (Login/Register UI) is unblocked — it plugs a real session check into `RequireAuth`'s `isAllowed` and refresh-retry into the API client's `getAuthHeader`/`onUnauthorized` seams. BORA-22 owns de-duplicating concurrent 401 refreshes (logged in the BORA-30 spec Assumptions).
+- **Blockers**: none. **Uncommitted**: spec/tasks/STATE doc updates from this session (finalizing status → Verified) + `validation.md`; the untracked `.specs/features/bora-22-login-register-ui/` dir is a separate feature, left alone.
+
