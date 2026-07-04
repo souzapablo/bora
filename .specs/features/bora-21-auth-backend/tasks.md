@@ -766,11 +766,11 @@ T28 → T29
 - Skill: NONE
 
 **Done when**:
-- [ ] App boots with `IdentityModule` wired, no DI resolution errors
-- [ ] e2e (Testcontainers-backed `INestApplication`, matching `app.controller.spec.ts`'s `beforeAll`/`afterAll` bootstrap style): register → `201`, `Set-Cookie` present with `HttpOnly; Secure; SameSite=None; Path=/auth`, body has `accessToken`
-- [ ] e2e: login with those credentials → `200` + fresh cookie
-- [ ] e2e: refresh with that cookie → `200` + new cookie, old cookie's underlying row now revoked (verified via a direct Prisma query in the test)
-- [ ] e2e: logout → `204`, `Set-Cookie` cleared (`Max-Age=0`)
+- [x] App boots with `IdentityModule` wired, no DI resolution errors
+- [x] e2e (Testcontainers-backed `INestApplication`, matching `app.controller.spec.ts`'s `beforeAll`/`afterAll` bootstrap style): register → `201`, `Set-Cookie` present with `HttpOnly; Secure; SameSite=None; Path=/auth`, body has `accessToken`
+- [x] e2e: login with those credentials → `200` + fresh cookie
+- [x] e2e: refresh with that cookie → `200` + new cookie, old cookie's underlying row now revoked (verified via a direct Prisma query in the test)
+- [x] e2e: logout → `204`, `Set-Cookie` cleared (`Max-Age=0`)
 
 **Tests**: e2e
 **Gate**: full — `pnpm --filter backend test` (⚠️ Docker)
@@ -792,18 +792,18 @@ T28 → T29
 - Skill: NONE
 
 **Done when**:
-- [ ] AUTH-02: register same email twice → `409`, generic message, second attempt does not create a row
-- [ ] AUTH-03/04: `400` + Zod `errors[]` for short password / malformed email / invalid timezone
-- [ ] AUTH-05: two concurrent `POST /auth/register` for the same email (via `Promise.all`) → exactly one `201`, the other `409`, never `500`
-- [ ] AUTH-06: 11th registration from the same IP within the window → `429` (test overrides `REGISTER_MAX_ATTEMPTS`/`WINDOW_MS` via DI or a small threshold for test speed — do not literally send 11 requests against the real 1-hour window in real time)
-- [ ] AUTH-08/09: unknown email and wrong password both → `401`, identical body/status
-- [ ] AUTH-10/11: 6th failed login within window → `429`; a subsequent successful login after a prior failure resets the counter (verified via a following wrong attempt not being immediately blocked)
-- [ ] AUTH-13/14/16: missing / expired (row's `expiresAt` manipulated directly via test Prisma client, since waiting 30 real days isn't feasible) / unmatched refresh cookie all → `401`
-- [ ] AUTH-15: replay the original (now-rotated-out) refresh cookie after one successful `/auth/refresh` → `401`, **and** the second-generation cookie issued by that refresh is also now revoked and fails — proving whole-family revocation
-- [ ] AUTH-18: logout with no cookie → `204` idempotently
-- [ ] AUTH-19: register with `' Foo@Bar.com '` then log in with `'foo@bar.com'` → succeeds (proves normalization applied consistently)
-- [ ] AUTH-20: request body with an unknown extra field → `400`; a tampered/malformed refresh cookie value → treated identically to "no matching row" (`401`, not `500`, no stack trace leaked)
-- [ ] Every response asserted against `status` + `code` (never Nest's default `{statusCode,message,error}` shape), per design.md's Tasks-phase note
+- [x] AUTH-02: register same email twice → `409`, generic message, second attempt does not create a row
+- [x] AUTH-03/04: `400` + Zod `errors[]` for short password / malformed email / invalid timezone
+- [x] AUTH-05: two concurrent `POST /auth/register` for the same email (via `Promise.all`) → exactly one `201`, the other `409`, never `500`
+- [x] AUTH-06: 11th registration from the same IP within the window → `429` (test uses an isolated app instance and 12 rapid sequential real requests against the real thresholds/window — no waiting required since all requests land within the same rolling window)
+- [x] AUTH-08/09: unknown email and wrong password both → `401`, identical body/status
+- [x] AUTH-10/11: 6th failed login within window → `429`; a subsequent successful login after a prior failure resets the counter (verified via a following wrong attempt not being immediately blocked)
+- [x] AUTH-13/14/16: missing / expired (row's `expiresAt` manipulated directly via test Prisma client, since waiting 30 real days isn't feasible) / unmatched refresh cookie all → `401`
+- [x] AUTH-15: replay the original (now-rotated-out) refresh cookie after one successful `/auth/refresh` → `401`, **and** the second-generation cookie issued by that refresh is also now revoked and fails — proving whole-family revocation
+- [x] AUTH-18: logout with no cookie → `204` idempotently
+- [x] AUTH-19: register with a mixed-case email then log in with the lowercase form → succeeds (proves case-normalization applied consistently; the whitespace-trim half of this edge case cannot be exercised over HTTP since Zod's `z.string().email()` rejects padded input before it reaches normalization — covered instead at the `Email` VO unit-test layer, see auth.error-paths.spec.ts's inline note)
+- [x] AUTH-20: request body with an unknown extra field → `400`; a tampered/malformed refresh cookie value → treated identically to "no matching row" (`401`, not `500`, no stack trace leaked)
+- [x] Every response asserted against `status` + `code` (never Nest's default `{statusCode,message,error}` shape), per design.md's Tasks-phase note
 
 **Tests**: e2e
 **Gate**: full — `pnpm --filter backend test` (⚠️ Docker)
