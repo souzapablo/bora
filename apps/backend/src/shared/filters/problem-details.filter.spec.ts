@@ -1,10 +1,11 @@
 import type { INestApplication } from "@nestjs/common";
-import { Controller, Get, Module } from "@nestjs/common";
+import { Controller, Get, Module, NotFoundException } from "@nestjs/common";
 import { Test } from "@nestjs/testing";
 import request from "supertest";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 
 import { AppException } from "../errors/app-exception";
+
 import { ProblemDetailsFilter } from "./problem-details.filter";
 
 @Controller("test")
@@ -29,6 +30,11 @@ class ThrowingController {
   @Get("unexpected")
   throwUnexpected(): never {
     throw new Error("boom");
+  }
+
+  @Get("http-exception")
+  throwHttpException(): never {
+    throw new NotFoundException("Widget not found");
   }
 }
 
@@ -84,5 +90,25 @@ describe("ProblemDetailsFilter (integration)", () => {
     expect(response.status).toBe(400);
     expect(response.body.code).toBe("VALIDATION_FAILED");
     expect(response.body.errors).toEqual([{ path: "password", message: "too short" }]);
+  });
+
+  it("preserves the status of a thrown Nest HttpException instead of collapsing it to 500", async () => {
+    const response = await request(app.getHttpServer()).get("/test/http-exception");
+
+    expect(response.status).toBe(404);
+    expect(response.headers["content-type"]).toContain("application/problem+json");
+    expect(response.body).toMatchObject({
+      status: 404,
+      code: "HTTP_404",
+      title: "Widget not found",
+      instance: "/test/http-exception",
+    });
+  });
+
+  it("preserves the 404 Nest generates for an unmatched route instead of collapsing it to 500", async () => {
+    const response = await request(app.getHttpServer()).get("/does-not-exist");
+
+    expect(response.status).toBe(404);
+    expect(response.body.code).toBe("HTTP_404");
   });
 });

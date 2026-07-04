@@ -108,7 +108,7 @@ Everything else (Prisma, Zod pipe, EventEmitter2 wiring, argon2, JWT, rate limit
 
 ### `shared/filters/problem-details.filter.ts`
 
-- **Purpose**: The single global `@Catch()` filter. Converts `AppException` (expected errors) and any other thrown value (unexpected errors — logged server-side, never detailed to the client) into one consistent `application/problem+json` body.
+- **Purpose**: The single global `@Catch()` filter. Converts `AppException` (expected errors), Nest's own `HttpException`s (framework-thrown, e.g. unmatched-route 404s — real status preserved), and any other thrown value (unexpected errors — logged server-side, never detailed to the client) into one consistent `application/problem+json` body.
 - **Location**: `apps/backend/src/shared/filters/problem-details.filter.ts`
 - **Interfaces**: `@Catch() class ProblemDetailsFilter implements ExceptionFilter { catch(exception: unknown, host: ArgumentsHost): void }`
 - **Dependencies**: `ERROR_CATALOG`, Pino logger (Tech Stack's existing logging choice) for the unexpected-exception branch
@@ -357,7 +357,7 @@ Login's two failure paths (`AUTH_INVALID_CREDENTIALS` for both unknown-email and
 | Argon2 throws (e.g. OOM) | Hashing happens before any DB write; this is a genuinely unexpected failure — left to throw, caught by `ProblemDetailsFilter`'s fallback branch | `500`, `code: 'INTERNAL_ERROR'`, no partial `User` row, no detail leaked |
 | Logout, no cookie present | Use-case returns success unconditionally (no `Result` error branch exists for logout) | `204` (idempotent) |
 
-`ProblemDetailsFilter` is the single `@Catch()` sink: `AppException` → look up `appError.code` in `ERROR_CATALOG` for status/title; anything else (a real bug, Prisma/argon2 internals, Nest's own routing exceptions) → logged in full server-side via Pino, client gets `code: 'INTERNAL_ERROR'` and a generic detail, never a stack trace.
+`ProblemDetailsFilter` is the single `@Catch()` sink: `AppException` → look up `appError.code` in `ERROR_CATALOG` for status/title; a Nest `HttpException` (framework-thrown, e.g. the built-in 404 for an unmatched route) → preserves its real status and message as `code: 'HTTP_<status>'`, not collapsed to 500 (fixed post-BORA-21: an earlier version routed every non-`AppException` through the generic-500 branch, which meant even a plain 404 on an unmapped route came back as `500 INTERNAL_ERROR`); anything else (a real bug, Prisma/argon2 internals) → logged in full server-side via Pino, client gets `code: 'INTERNAL_ERROR'` and a generic detail, never a stack trace.
 
 ---
 

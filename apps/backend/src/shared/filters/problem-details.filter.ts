@@ -1,5 +1,5 @@
 import type { ArgumentsHost, ExceptionFilter } from "@nestjs/common";
-import { Catch, Logger } from "@nestjs/common";
+import { Catch, HttpException, Logger } from "@nestjs/common";
 
 import { AppException } from "../errors/app-exception";
 import { ERROR_CATALOG } from "../errors/error-catalog";
@@ -50,6 +50,26 @@ export class ProblemDetailsFilter implements ExceptionFilter {
       }
 
       response.status(entry.status).type("application/problem+json").json(body);
+      return;
+    }
+
+    if (exception instanceof HttpException) {
+      const status = exception.getStatus();
+      const nestResponse = exception.getResponse();
+      const message =
+        typeof nestResponse === "string"
+          ? nestResponse
+          : ((nestResponse as { message?: string | string[] }).message ?? exception.message);
+
+      const body: ProblemDetails = {
+        type: `https://bora.dev/errors/HTTP_${status}`,
+        title: Array.isArray(message) ? message.join(", ") : message,
+        status,
+        instance: request.url,
+        code: `HTTP_${status}`,
+      };
+
+      response.status(status).type("application/problem+json").json(body);
       return;
     }
 
