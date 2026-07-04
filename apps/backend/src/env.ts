@@ -1,8 +1,10 @@
 export interface BackendEnv {
   PORT: string;
+  DATABASE_URL: string;
+  JWT_ACCESS_SECRET: string;
 }
 
-const REQUIRED_KEYS: Array<keyof BackendEnv> = ["PORT"];
+const REQUIRED_KEYS: Array<keyof BackendEnv> = ["PORT", "DATABASE_URL", "JWT_ACCESS_SECRET"];
 
 /**
  * Validates that every env var documented in .env.example is present.
@@ -17,5 +19,9 @@ export function validateEnv(source: NodeJS.ProcessEnv = process.env): BackendEnv
     );
   }
 
-  return { PORT: source.PORT as string };
+  return {
+    PORT: source.PORT as string,
+    DATABASE_URL: source.DATABASE_URL as string,
+    JWT_ACCESS_SECRET: source.JWT_ACCESS_SECRET as string,
+  };
 }
